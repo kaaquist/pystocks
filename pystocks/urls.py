@@ -7,6 +7,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('pystocks.apps.collector',
     # Examples:
     url(r'^$', 'views.home'),
+    url(r'^git$', 'views.gitpull'),
     # url(r'^pystocks/', include('pystocks.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
