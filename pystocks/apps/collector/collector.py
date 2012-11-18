@@ -1,6 +1,8 @@
 """
 This module implements a custom Twitter stream listener which filters on a number of companies and their corresponding keywords.
 The module will ignore stream errors and keep it self alive at all costs. Only successfull responses are handled.
+
+Based on article by Peter Hoffmann: http://peter-hoffmann.com/2012/simple-twitter-streaming-api-access-with-python-and-oauth.html
 """
 
 import sys
