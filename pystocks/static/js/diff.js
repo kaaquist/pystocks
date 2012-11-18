@@ -14,7 +14,7 @@ function loadCompany(stockSymbol, start, end, width, height) {
 
 	console.log('Before loading');
 
-	$('#content-wrapper').append("<img class='loading-container' src='http://pierre.chachatelier.fr/programmation/images/mozodojo-original-image.jpg'>")
+	$('#content-wrapper').append("<img class='loading-container' src='http://authenticate.hublot.com/interface/img/icons/loading.gif'>")
 
 	var iframe = "<iframe style='display:none' class='async-graph' src='" + url + "'></iframe>"
 	$('#content-wrapper').append(iframe);
