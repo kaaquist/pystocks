@@ -1,19 +1,35 @@
 $(document).ready(function(){
 
-loadCompany('GOOG', null, null);
-loadCompany('IBM', null, null);
+loadCompany('GOOG', null, null, 400, 250);
+loadCompany('MSFT', null, null, 400, 250);
 
-function loadCompany(stockSymbol, start, end) {
+function loadCompany(stockSymbol, start, end, width, height) {
 	var params = '?'
 	params += start != null ? 'start=' + start + '&' : '';
-	params += end != null ? 'end=' + end : '';
+	params += end != null ? 'end=' + end + '&' : '';
+	params += width != null ? 'width=' + width + '&' : '';
+	params += height != null ? 'height=' + height + '&' : '';
 
 	var url = '/demo/diff/' + stockSymbol + params;
 
-	var iframe = "<iframe src='" + url + "'></iframe>"
+	console.log('Before loading');
 
+	$('#content-wrapper').append("<img class='loading-container' src='http://pierre.chachatelier.fr/programmation/images/mozodojo-original-image.jpg'>")
+
+	var iframe = "<iframe style='display:none' class='async-graph' src='" + url + "'></iframe>"
 	$('#content-wrapper').append(iframe);
 }
+
+
+/* Called when iframe content is loaded */
+$('.async-graph').load(function() {
+  console.log(this);
+  var content = this;
+  $(content).prev('img').fadeOut('slow', function() {
+  	$(content).fadeIn(1000);	
+  });
+  
+});
 
 
 
