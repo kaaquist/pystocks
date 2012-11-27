@@ -15,7 +15,7 @@ import urllib2
 import json
 import datetime
 import os
-import cou
+import couchdb
 from trigram import Trigram
 
 filename = 'AFINN/AFINN-111.txt' # This is the newest wordlist.
@@ -74,7 +74,7 @@ def labmtsentiment(text):
         sentiment = float(sumOfSentiments)/math.sqrt(len(sentiments))
         total = 10222 * len(sentiments)
         totalsentiment = float(total)/math.sqrt(len(sentiments))
-        sentiment = sentiment/(totalsentiment/100)
+        sentiment = float(sentiment)/(totalsentiment/100)
     else:
         sentiment = 0
     return sentiment
