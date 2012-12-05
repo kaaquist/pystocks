@@ -10,7 +10,7 @@ function loadCompany(stockSymbol, start, end, width, height) {
 	params += width != null ? 'width=' + width + '&' : '';
 	params += height != null ? 'height=' + height + '&' : '';
 
-	var url = '/demo/diff/' + stockSymbol + params;
+	var url = '/pystocks/demo/diff/' + stockSymbol + params;
 
 	console.log('Before loading');
 

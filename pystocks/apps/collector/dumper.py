@@ -39,7 +39,7 @@ def _company_view(company):
 	return [row['value'] for row in json.loads(urllib2.urlopen(url).read())['rows']]
 
 
-def _write_docs(docs, filename=FILENAME):
+def _write_docs(docs, filename='dummy.json'):
 	"""Write a list of documents to a file."""
 	with io.open(filename, 'wb') as outfile:
 		json.dump(docs, outfile)

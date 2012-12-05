@@ -16,7 +16,11 @@ def quotes(stock_symbol, start=None, end=None):
 	start = start if start else 0
 	end = date.fromtimestamp(end) if end else date.today()
 	start = date.fromtimestamp(start)
-	quotes = quotes_historical_yahoo(stock_symbol, start, end)
+	try:
+		quotes = quotes_historical_yahoo(stock_symbol, start, end)
+	except:
+		# If we cannot find stock symbol return None to let caller know
+		return None
 	
 	dates = [num2date(q[0]) for q in quotes]
 	dates = [str(d) for d in dates]

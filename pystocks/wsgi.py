@@ -16,8 +16,17 @@ framework.
 import os
 import sys
 
+sys.path.append('/home/django/pystocks/pystocks')
 sys.path.append('/home/django/pystocks')
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pystocks.settings")
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pystocks.settings")
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+os.environ["DJANGO_SETTINGS_MODULE"] = "pystocks.settings"
+
+
+# sys.path.append('/home/s112460/public_html/awesome/awesome')
+# sys.path.append('/home/s112460/public_html/awesome')
+
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
