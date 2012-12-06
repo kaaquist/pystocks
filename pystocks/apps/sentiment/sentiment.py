@@ -71,12 +71,16 @@ class Sentimentanalysis():
 		#check to se if it is not None
 		if sentiments:
 			sumOfSentiments = 0
+			valcount = 0
 			for tt in sentiments:
 				#only uses the first row in labmt
-				sumOfSentiments += int(str(tt).partition('\t')[0])
-			sentiment = float(sumOfSentiments)/math.sqrt(len(sentiments))
-			total = 10222 * len(sentiments)
-			totalsentiment = float(total)/math.sqrt(len(sentiments))
+				val = int(str(tt).partition('\t')[0])
+				if val != 0:
+					sumOfSentiments += val
+					valcount += 1
+			sentiment = float(sumOfSentiments)/math.sqrt(valcount)
+			total = 10222 * valcount
+			totalsentiment = float(total)/math.sqrt(valcount)
 			sentiment = float(sentiment)/(totalsentiment/100)
 		else:
 			sentiment = 0
