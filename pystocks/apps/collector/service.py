@@ -24,7 +24,7 @@ def query_company(request, stock_symbol):
 	except:
 		return HttpResponse(_error_message('Start and end parameters must be in valid UNIX timestamp format'), status=400, mimetype='application/json')
 
-
+	# return HttpResponse('hell')
 	data = tweets.tweets(stock_symbol, start=start, end=end)
 
 	return HttpResponse(json.dumps(data))

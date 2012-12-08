@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse
 import json
 import datetime
+import pystocks.apps.collector.tweets as tweets
 from sentiment import Sentimentanalysis
 
 
@@ -27,19 +28,21 @@ def query_afinn_sentiment_on_company(request, stock_symbol):
 	sentimentanalysis = Sentimentanalysis()
 	data = tweets.tweets(stock_symbol, start=start, end=end)
 	sentafinn={}
-	for doc in data:
-		#we only want the date to generate a dict with key as date
-		tweetdate = datetime.datetime.fromtimestamp(doc['timestamp']).strftime('%Y-%m-%d %H:%M:%S').split(' ')[0]
-		tweet = doc['tweet']
-		isenglish = sentimentanalysis.evaluatetweet(tweet)
-		if isenglish > 0.8:
-			sentval = sentimentanalysis.afinnsentiment(tweet)
-			if sentafinn.get(tweetdate, 0) == 0:
-				sentafinn[tweetdate] = sentval
-			else:
-				sentafinn[tweetdate] = (sentafinn.get(tweetdate, 0) + sentval)/2
+	for key in data:
+		docs = data[key]
+		for doc in docs:
+			#we only want the date to generate a dict with key as date
+			tweetdate = datetime.datetime.fromtimestamp(doc['timestamp']).strftime('%Y-%m-%d %H:%M:%S').split(' ')[0]
+			tweet = doc['tweet']
+			isenglish = sentimentanalysis.evaluatetweet(tweet)
+			if isenglish > 0.8:
+				sentval = sentimentanalysis.afinnsentiment(tweet)
+				if sentafinn.get(tweetdate, 0) == 0:
+					sentafinn[tweetdate] = sentval
+				else:
+					sentafinn[tweetdate] = (sentafinn.get(tweetdate, 0) + sentval)/2
 	
-	return HttpResponse(json.dumps(sentafinn))
+	return HttpResponse(json.dumps(sentafinn), mimetype='application/json')
 	
 def query_labmt_sentiment_on_company(request, stock_symbol):
 	"""
@@ -59,18 +62,21 @@ def query_labmt_sentiment_on_company(request, stock_symbol):
 	sentimentanalysis = Sentimentanalysis()
 	data = tweets.tweets(stock_symbol, start=start, end=end)
 	sentlabmt={}
-	for doc in data:
-		#we only want the date to generate a dict with key as date
-		tweetdate = datetime.datetime.fromtimestamp(doc['timestamp']).strftime('%Y-%m-%d %H:%M:%S').split(' ')[0]
-		tweet = doc['tweet']
-		isenglish = sentimentanalysis.evaluatetweet(tweet)
-		if isenglish > 0.8:
-			sentval = sentimentanalysis.labmtsentiment(tweet)
-			if sentafinn.get(tweetdate, 0) == 0:
-				sentlabmt[tweetdate] = sentval
-			else:
-				sentlabmt[tweetdate] = (sentlabmt.get(tweetdate, 0) + sentval)/2
-	
-	return HttpResponse(json.dumps(sentlabmt))
+	for key in data:
+		docs = data[key]
+		for doc in docs:
+			#we only want the date to generate a dict with key as date
+			tweetdate = datetime.datetime.fromtimestamp(doc['timestamp']).strftime('%Y-%m-%d %H:%M:%S').split(' ')[0]
+			tweet = doc['tweet']
+			isenglish = sentimentanalysis.evaluatetweet(tweet)
+			if isenglish > 0.8:
+				sentval = sentimentanalysis.labmtsentiment(tweet)
+				if sentlabmt.get(tweetdate, 0) == 0:
+					sentlabmt[tweetdate] = sentval
+				else:
+					sentlabmt[tweetdate] = (sentlabmt.get(tweetdate, 0) + sentval)/2
+	return HttpResponse(json.dumps(sentlabmt), mimetype='application/json')
 
 
+def _error_message(error):
+	return json.dumps({'error': error})

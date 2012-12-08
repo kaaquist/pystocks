@@ -17,6 +17,8 @@ import datetime
 import os
 from trigram import Trigram
 
+curr_dir = os.path.dirname(__file__)
+
 class Sentimentanalysis():
 	filelabmt = None
 	filename = None
@@ -30,15 +32,15 @@ class Sentimentanalysis():
 	
 	def __init__(self):
 		self.pattern_split = re.compile(r"\W+")
-		self.filename = 'AFINN/AFINN-111.txt' # This is the newest wordlist.
-		'''
+		self.filename = os.path.join(curr_dir, 'AFINN/AFINN-111.txt') # This is the newest wordlist.
+		"""
 		Python supports the creation of anonymous functions (i.e. functions that are not bound to
 		a name) at runtime, using a construct called "lambda".
-		'''
+		"""
 		self.afinn = dict(map(lambda (w, s): (w, int(s)), [
 			ws.strip().split('\t') for ws in open(self.filename) ]))
 
-		self.filelabmt = 'AFINN/labmt.txt' # This is the newest wordlist.
+		self.filelabmt =  os.path.join(curr_dir, 'AFINN/labmt.txt') # This is the newest wordlist.
 		self.labmtkeywords = dict(map(lambda(w, s):(w, str(s)), [
 			ws.strip().split('\t',1) for ws in open(self.filelabmt)]))
 	
@@ -70,26 +72,29 @@ class Sentimentanalysis():
 		sentiments = map(lambda word: self.labmtkeywords.get(word, 0), words)
 		#check to se if it is not None
 		if sentiments:
-			sumOfSentiments = 0
-			valcount = 0
-			for tt in sentiments:
-				#only uses the first row in labmt
-				val = int(str(tt).partition('\t')[0])
-				if val != 0:
-					sumOfSentiments += val
-					valcount += 1
-			sentiment = float(sumOfSentiments)/math.sqrt(valcount)
-			total = 10222 * valcount
-			totalsentiment = float(total)/math.sqrt(valcount)
-			sentiment = float(sentiment)/(totalsentiment/100)
+			try:
+				sumOfSentiments = 0
+				valcount = 0
+				for tt in sentiments:
+					#only uses the first row in labmt
+					val = int(str(tt).partition('\t')[0])
+					if val != 0:
+						sumOfSentiments += val
+						valcount += 1
+				sentiment = float(sumOfSentiments)/math.sqrt(valcount)
+				total = 10222 * valcount
+				totalsentiment = float(total)/math.sqrt(valcount)
+				sentiment = float(sentiment)/(totalsentiment/100)
+			except:
+				sentiment  = 0
 		else:
 			sentiment = 0
 		return sentiment
 		
 	def evaluatetweet(self,tweet):
 		"""
-		This methode take a tweet and evaluate if it is english or not based on
-		n-grams. It return between 1 for complete similarity, and 0 for utter 
+		This method takes a tweet and evaluates if it is english or not based on
+		n-grams. It returns between 1 for complete similarity, and 0 for utter 
 		difference.
 		"""
 		text = Trigram(tweet)

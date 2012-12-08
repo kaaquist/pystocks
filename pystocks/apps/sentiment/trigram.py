@@ -1,6 +1,8 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import random
+import re
 from urllib import urlopen
 
 class Trigram:
@@ -70,7 +72,8 @@ class Trigram:
     def parseFile(self, fn):
         pair = '  '
         istweet = False
-        if '://' in fn:
+        # if '://' in fn:
+        if re.match('^http://\S+$', fn):
             print "trying to fetch url, may take time..."
             try:
                 f = urlopen(fn)
@@ -79,7 +82,7 @@ class Trigram:
         else:
             try:
                 f = open(fn)
-            except IOError:
+            except:
                 istweet = True
         
         if istweet:
