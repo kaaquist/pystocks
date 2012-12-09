@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pystocks.apps.collector',
+    'pystocks.apps.sentiment',
     'gunicorn',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',

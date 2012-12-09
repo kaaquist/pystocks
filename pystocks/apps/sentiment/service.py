@@ -8,6 +8,7 @@ import json
 import datetime
 import pystocks.apps.collector.tweets as tweets
 from sentiment import Sentimentanalysis
+from tweet_sentiment import sentiments
 
 
 def query_afinn_sentiment_on_company(request, stock_symbol):
@@ -25,24 +26,26 @@ def query_afinn_sentiment_on_company(request, stock_symbol):
 	except:
 		return HttpResponse(_error_message('Start and end parameters must be in valid UNIX timestamp format'), status=400, mimetype='application/json')
 
-	sentimentanalysis = Sentimentanalysis()
-	data = tweets.tweets(stock_symbol, start=start, end=end)
-	sentafinn={}
-	for key in data:
-		docs = data[key]
-		for doc in docs:
-			#we only want the date to generate a dict with key as date
-			tweetdate = datetime.datetime.fromtimestamp(doc['timestamp']).strftime('%Y-%m-%d %H:%M:%S').split(' ')[0]
-			tweet = doc['tweet']
-			isenglish = sentimentanalysis.evaluatetweet(tweet)
-			if isenglish > 0.8:
-				sentval = sentimentanalysis.afinnsentiment(tweet)
-				if sentafinn.get(tweetdate, 0) == 0:
-					sentafinn[tweetdate] = sentval
-				else:
-					sentafinn[tweetdate] = (sentafinn.get(tweetdate, 0) + sentval)/2
-	
-	return HttpResponse(json.dumps(sentafinn), mimetype='application/json')
+	# sentimentanalysis = Sentimentanalysis()
+	# data = tweets.tweets(stock_symbol, start=start, end=end)
+	# sentafinn={}
+	# for key in data:
+	# 	docs = data[key]
+	# 	for doc in docs:
+	# 		#we only want the date to generate a dict with key as date
+	# 		tweetdate = datetime.datetime.fromtimestamp(doc['timestamp']).strftime('%Y-%m-%d %H:%M:%S').split(' ')[0]
+	# 		tweet = doc['tweet']
+	# 		isenglish = sentimentanalysis.evaluatetweet(tweet)
+	# 		if isenglish > 0.8:
+	# 			sentval = sentimentanalysis.afinnsentiment(tweet)
+	# 			if sentafinn.get(tweetdate, 0) == 0:
+	# 				sentafinn[tweetdate] = sentval
+	# 			else:
+	# 				sentafinn[tweetdate] = (sentafinn.get(tweetdate, 0) + sentval)/2
+
+
+	sentiment_data = sentiments(stock_symbol, start=start, end=end)
+	return HttpResponse(json.dumps(sentiment_data), mimetype='application/json')
 	
 def query_labmt_sentiment_on_company(request, stock_symbol):
 	"""

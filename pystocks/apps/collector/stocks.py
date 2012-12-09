@@ -27,7 +27,12 @@ def quotes(stock_symbol, start=None, end=None):
 	closing_prices = [q[1] for q in quotes]
 
 	# return {'dates': dates, 'closing_prices': closing_prices}
-	return zip(dates, closing_prices)
+	# return zip(dates, closing_prices)
+	ret = {}
+	for pair in zip(dates, closing_prices):
+		ret[pair[0].split(' ')[0]] = pair[1]
+		# ret[pair[0]] = pair[1]
+	return ret 
 
 
 def _quotes(stock_symbol, start_weeks_delta=4, end_weeks_delta=0, as_json=False, for_d3=False):

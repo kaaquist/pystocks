@@ -77,7 +77,7 @@ class Trigram:
             print "trying to fetch url, may take time..."
             try:
                 f = urlopen(fn)
-            except IOError:
+            except:
                 istweet = True
         else:
             try:
