@@ -9,8 +9,15 @@ import numpy as np
 
 BASE_URL = 'http://ec2-23-22-75-17.compute-1.amazonaws.com/pystocks/v1/'
 
-def generate_d3(stock_symbol, start=None, end=None):
-	"""Generate a JSON structure that makes the data usefull for D3."""
+def generate_d3(stock_symbol, method='afinn', start=None, end=None):
+	"""
+	Generate a JSON structure that makes the data usefull for D3.
+
+	Possible methods:
+	afinn
+	labmt
+
+	"""
 	params = '?'
 	if start:
 		params += 'start=' + str(start) + '&'
@@ -19,19 +26,13 @@ def generate_d3(stock_symbol, start=None, end=None):
 
 	# try:
 	url = '%squotes/%s%s' % (BASE_URL, stock_symbol, params)
-	# print url
 	data = urllib2.urlopen(url).read()
 	data = json.loads(data)
-	# print data
 
-	# url2 = '%ssentiment/afinn/%s%s' % (BASE_URL, stock_symbol, params)
-	url2 = '%ssentiment/labmt/%s%s' % (BASE_URL, stock_symbol, params)
+	url2 = '%ssentiment/%s/%s%s' % (BASE_URL, method, stock_symbol, params)
 	data2 = urllib2.urlopen(url2).read()
 	data2 = json.loads(data2)
-	# print data2
-	# except Exception as e:
-	# 	# In case we cannot look up data we return None to let caller know
-	# 	return None
+
 	print data2.keys()
 	new_data = {}
 	new_data2 = {}
@@ -39,32 +40,20 @@ def generate_d3(stock_symbol, start=None, end=None):
 		if data2.get(key):
 			new_data[key] = data[key]
 			new_data2[key] = data2[key]
-		# else:
-			# print 'No match:'
-			# print key
-	# print data.keys()
-	# print
-	# print
-	# print
-	
 
 	data = new_data
 	data2 = new_data2
 
 	values1 = [data[key] for key in sorted(data)]
-	values2 = [data2[key] for key in sorted(data2)];
-	# print values1
-	# print values2	
+	values2 = [data2[key] for key in sorted(data2)]
 
 	quotes, moods = _standardize_data(values1, values2)
 
 	result = []
 	i = 0
 	for d in sorted(data):
-		# result.append({'date': ''.join(d[0].split(' ')[0].split('-')), 'quote': d[1], 'mood': data2[i][1]})
 		result.append({'date': ''.join(d.split('-')), 'quote': quotes[i], 'mood': moods[i]})
 		i += 1
-	print result
 	return json.dumps(result)
 
 

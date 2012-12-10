@@ -16,12 +16,15 @@ def diff(request, stock_symbol):
 	except:
 		return HttpResponse('Start and end parameters must be in valid UNIX timestamp format', status=400)
 
-	data = d3generator.generate_d3(stock_symbol, start=start, end=end)
+	method = request.GET.get('method', 'afinn')
+	data = d3generator.generate_d3(stock_symbol, method=method, start=start, end=end)
+	
 	if data == None:
 		return HttpResponse('Could not find data for %s' % (stock_symbol))
 	width = request.GET.get('width', '960')
 	height = request.GET.get('height', '500')
-	return render(request, 'diff.html', {'data': data, 'width': width, 'height': height})
+	company_name = request.GET.get('title')
+	return render(request, 'diff.html', {'data': data, 'width': width, 'height': height, 'company_name': company_name})
 
 def diff_ajax(request):
 	return render(request, 'diff_ajax.html')

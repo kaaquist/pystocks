@@ -5,7 +5,9 @@
 	{% for company in companies %}
 
 	<div>
-		<a href='diff/{{ company.symbol }}'>{{ company.name }}</a> 
+		{{ company.name }}:
+		<a href='diff/{{ company.symbol }}?title={{ company.name }}&method=afinn'>AFINN</a>
+		<a href='diff/{{ company.symbol }}?title={{ company.name }}&method=labmt'>LabMT</a>
 	</div>
 	<br/>
 
