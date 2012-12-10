@@ -65,8 +65,9 @@ class Sentimentanalysis():
     
 	def labmtsentiment(self,text):
 		"""
-		Returns a float for sentiment strength based on the input text.
-		Positive values are positive valence, negative value are negative valence. 
+		Returns a int for sentiment strength based on the input text.
+		Returns an int which represent a % (pct) and 100% is angry/negative and 1% is 
+		positive/happiness. 
 		"""
 		words = self.pattern_split.split(text.lower())
 		sentiments = map(lambda word: self.labmtkeywords.get(word, 0), words)
@@ -76,7 +77,7 @@ class Sentimentanalysis():
 				sumOfSentiments = 0
 				valcount = 0
 				for tt in sentiments:
-					#only uses the first row in labmt
+					#only uses the first column in labmt
 					val = int(str(tt).partition('\t')[0])
 					if val != 0:
 						sumOfSentiments += val
@@ -86,9 +87,10 @@ class Sentimentanalysis():
 				totalsentiment = float(total)/math.sqrt(valcount)
 				sentiment = float(sentiment)/(totalsentiment/100)
 			except:
-				sentiment  = 0
+				# this has to be 50% not negativ and not positive.
+				sentiment  = 50
 		else:
-			sentiment = 0
+			sentiment = 50
 		return sentiment
 		
 	def evaluatetweet(self,tweet):
