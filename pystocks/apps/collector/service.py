@@ -33,7 +33,7 @@ def query_company(request, stock_symbol):
 def company_list(request):
 	"""Return a list of companies and their stock symbols."""
 	companies = [{'name': v, 'symbol': k} for k,v in settings.STOCK_SYMBOL_MAPPINGS.items()]
-	return HttpResponse(json.dumps(companies))
+	return HttpResponse(json.dumps(companies), mimetype='application/json')
 
 
 def quotes(request, stock_symbol):

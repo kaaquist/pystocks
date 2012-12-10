@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+	{% for company in companies %}
+
+	<div>
+		<a href='diff/{{ company.symbol }}'>{{ company.name }}</a> 
+	</div>
+	<br/>
+
+	{% endfor %}
+
+
+{% endblock %}

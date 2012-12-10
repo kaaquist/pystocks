@@ -24,7 +24,8 @@ def generate_d3(stock_symbol, start=None, end=None):
 	data = json.loads(data)
 	# print data
 
-	url2 = '%ssentiment/afinn/%s%s' % (BASE_URL, stock_symbol, params)
+	# url2 = '%ssentiment/afinn/%s%s' % (BASE_URL, stock_symbol, params)
+	url2 = '%ssentiment/labmt/%s%s' % (BASE_URL, stock_symbol, params)
 	data2 = urllib2.urlopen(url2).read()
 	data2 = json.loads(data2)
 	# print data2

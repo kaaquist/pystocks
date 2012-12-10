@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import d3generator
+import urllib2
+import json
 
 def diff(request, stock_symbol):
 
@@ -23,3 +25,10 @@ def diff(request, stock_symbol):
 
 def diff_ajax(request):
 	return render(request, 'diff_ajax.html')
+
+
+def index(request):
+	url = 'http://ec2-23-22-75-17.compute-1.amazonaws.com/pystocks/v1/companies'
+	companies = json.loads(urllib2.urlopen(url).read())
+	companies = sorted(companies, key=lambda k: k['name']) 
+	return render(request, 'index.html', {'companies': companies})
