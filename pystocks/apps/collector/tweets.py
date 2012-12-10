@@ -47,4 +47,4 @@ if __name__ == '__main__':
     sys.path.append('/home/django/pystocks/pystocks')
     sys.path.append('/home/django/pystocks')
     os.environ["DJANGO_SETTINGS_MODULE"] = "pystocks.settings"
-    tweets('GOOG')
+    print tweets('GOOG')

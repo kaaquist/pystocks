@@ -109,10 +109,11 @@ class Sentimentanalysis():
         """
         text = Trigram(tweet)
         if not self.engtext:
-            print "Loading"
+            # print "Loading"
             url = 'http://gutenberg.net/dirs/etext05/cfgsh10.txt'
             self.engtext = Trigram(url)
         isitenglish = (text - self.engtext)
+        print isitenglish
         return isitenglish
 
 def test():

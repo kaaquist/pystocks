@@ -19,8 +19,8 @@ def sentiments(stock_symbol, method='afinn', start=None, end=None):
         return {}
     data = json.loads(company_file.read())
 
-    if start or end:
-        data = _filter_on_date(data, company_name, start, end)
+    # if start or end:
+    data = _filter_on_date(data, company_name, start, end)
 
     return data
 
@@ -58,7 +58,8 @@ def _filter_on_date(data, company_name, start, end):
 
         filtered_data[s_date] = sentiment
 
-    return {company_name: filtered_data}
+    return filtered_data
+    # return {company_name: filtered_data}
 
 if __name__ == '__main__':
     import os

@@ -61,7 +61,7 @@ class Trigram:
             self.parseFile(fn)
 
     def parseSentence(self, fn):
-        print 'trying to parse tweet, may take time...'
+        # print 'trying to parse tweet, may take time...'
         pair = '  '
         for letter in fn.strip() + ' ':
             d = self.lut.setdefault(pair, {})
@@ -74,7 +74,7 @@ class Trigram:
         istweet = False
         # if '://' in fn:
         if re.match('^http://\S+$', fn):
-            print "trying to fetch url, may take time..."
+            # print "trying to fetch url, may take time..."
             try:
                 f = urlopen(fn)
             except:
@@ -89,8 +89,8 @@ class Trigram:
             self.parseSentence(fn)
         else:        
             for z, line in enumerate(f):
-                if not z % 1000:
-                    print "line %s" % z
+                # if not z % 1000:
+                    # print "line %s" % z
                 # \n's are spurious in a prose context
                 for letter in line.strip() + ' ':
                     d = self.lut.setdefault(pair, {})
